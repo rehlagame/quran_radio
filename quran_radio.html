@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="القرآن الكريم - استماع مباشر">
+    <meta name="theme-color" content="#004d40">
+    <title>القرآن الكريم</title>
+
+    <!-- استدعاء خط الأميري للكتابة الأندلسية -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-green: #004d40;  /* أخضر داكن إسلامي */
+            --secondary-green: #00695c;
+            --gold-main: #c5a059;      /* ذهبي أندلسي */
+            --gold-bright: #d4af37;
+            --bg-cream: #fdfbf7;
+            --text-color: #1a1a1a;
+            --glass-panel: rgba(255, 255, 255, 0.95);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Amiri', serif; /* الخط الأندلسي */
+            background-color: var(--bg-cream);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* خلفية النقاط الذهبية مثل الصورة المرفقة */
+            background-image: radial-gradient(var(--gold-main) 1.5px, transparent 1.5px);
+            background-size: 30px 30px;
+            overflow-x: hidden;
+        }
+
+        /* --- تصميم الشعار الهندسي (CSS Only) --- */
+        header {
+            text-align: center;
+            padding-top: 40px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .logo-container {
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 20px;
+            background-color: var(--primary-green);
+            border-radius: 50%;
+            /* إطار ذهبي مزدوج */
+            border: 4px double var(--gold-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0, 77, 64, 0.3);
+        }
+
+        /* المربع الأول */
+        .geo-shape {
+            position: absolute;
+            width: 45px;
+            height: 45px;
+            border: 2px solid var(--gold-main);
+            background: transparent;
+            z-index: 1;
+        }
+
+        /* المربع الثاني (المدور 45 درجة) لتكوين النجمة الثمانية */
+        .geo-shape.rotated {
+            transform: rotate(45deg);
+        }
+
+        /* الدائرة الصغيرة في المنتصف */
+        .center-dot {
+            width: 8px;
+            height: 8px;
+            border: 2px solid var(--gold-main);
+            border-radius: 50%;
+            z-index: 2;
+        }
+
+        h1 {
+            color: var(--primary-green);
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+            font-weight: 700;
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.1);
+        }
+
+        p.subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        /* --- واجهة الراديو --- */
+        main {
+            width: 100%;
+            max-width: 600px; /* لضمان الشكل الجميل على التابلت والكمبيوتر */
+            padding: 0 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .radio-card {
+            background: var(--glass-panel);
+            width: 100%;
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            border: 1px solid rgba(197, 160, 89, 0.4);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        /* زخرفة بسيطة أعلى الكارت */
+        .radio-card::before {
+            content: "❖";
+            display: block;
+            color: var(--gold-main);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .status-text {
+            color: var(--secondary-green);
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            font-weight: bold;
+            min-height: 1.5em;
+        }
+
+        /* زر التشغيل */
+        .play-wrapper {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .play-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            border: 3px solid var(--gold-main);
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0, 77, 64, 0.3);
+            z-index: 2;
+            transition: transform 0.2s;
+        }
+
+        .play-btn:active {
+            transform: scale(0.95);
+        }
+
+        .icon-play {
+            width: 0;
+            height: 0;
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            border-right: 20px solid #fff; /* RTL Direction */
+            margin-right: -5px;
+        }
+
+        .playing .icon-play {
+            width: 14px;
+            height: 20px;
+            border: none;
+            border-right: 4px solid #fff;
+            border-left: 4px solid #fff;
+            background: transparent;
+            margin-right: 0;
+        }
+
+        /* تأثير النبض */
+        .pulse {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 1px solid var(--gold-main);
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .playing-anim .pulse {
+            animation: pulse-ring 2s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 0.8; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        /* --- شبكة الأجزاء --- */
+        .grid-section {
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            text-align: center;
+            color: var(--primary-green);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            border-bottom: 1px solid rgba(197, 160, 89, 0.3);
+            padding-bottom: 10px;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .parts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 10px;
+        }
+
+        .part-btn {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 12px 5px;
+            text-align: center;
+            font-family: 'Amiri', serif;
+            font-size: 1rem;
+            color: var(--primary-green);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .part-btn:hover {
+            border-color: var(--gold-main);
+            transform: translateY(-2px);
+        }
+
+        .part-btn.active {
+            background-color: var(--primary-green);
+            color: #fff;
+            border-color: var(--gold-main);
+            font-weight: bold;
+        }
+
+        /* --- الفوتر --- */
+        footer {
+            margin-top: auto;
+            width: 100%;
+            background: var(--primary-green);
+            color: #fff;
+            text-align: center;
+            padding: 30px 20px;
+            border-top: 4px solid var(--gold-main);
+        }
+
+        .footer-text {
+            margin-bottom: 15px;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .credit-box {
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 10px;
+            display: inline-block;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .olo-link {
+            color: var(--gold-bright);
+            text-decoration: none;
+            font-weight: bold;
+            font-family: sans-serif;
+            display: block;
+            margin-top: 5px;
+            font-size: 1.1rem;
+        }
+
+        .olo-link:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        /* --- تحسينات الشاشات الكبيرة --- */
+        @media (min-width: 768px) {
+            h1 { font-size: 3rem; }
+            .radio-card { padding: 40px; }
+            .play-wrapper { width: 120px; height: 120px; }
+            .play-btn { width: 100px; height: 100px; }
+            .parts-grid { gap: 15px; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+        }
+
+        audio { display: none; }
+    </style>
+</head>
+<body>
+
+<header>
+    <!-- الشعار الهندسي المطابق للصورة -->
+    <div class="logo-container">
+        <div class="geo-shape"></div>
+        <div class="geo-shape rotated"></div>
+        <div class="center-dot"></div>
+    </div>
+    <h1>القرآن الكريم</h1>
+    <p class="subtitle">تلاوات عطرة على مدار الساعة</p>
+</header>
+
+<main>
+    <!-- كارت المشغل -->
+    <section class="radio-card">
+        <div id="statusText" class="status-text">اضغط زر التشغيل</div>
+
+        <div class="play-wrapper" id="playWrapper">
+            <div class="pulse"></div>
+            <div class="play-btn" id="mainBtn">
+                <div class="icon-play"></div>
+            </div>
+        </div>
+
+        <div style="font-size: 0.9rem; color: #777;">
+            استمع بقلبك
+        </div>
+    </section>
+
+    <!-- شبكة الأجزاء -->
+    <section class="grid-section">
+        <div class="section-title">اختر جزءاً للاستماع</div>
+        <div class="parts-grid" id="partsContainer">
+            <!-- سيتم توليد الأزرار هنا -->
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p class="footer-text">تم تصميم وصناعة الصفحة من : فاعل خير</p>
+    <div class="credit-box">
+        <span>تم تصميم الصفحة بواسطة :</span>
+        <a href="https://www.olosolutions.cc/" target="_blank" class="olo-link">OLO Tech Solutions</a>
+    </div>
+</footer>
+
+<audio id="quranAudio" preload="none"></audio>
+
+<script>
+    // روابط الأجزاء
+    const partsUrls = [
+        "http://j.mp/2b8SiNO", "http://j.mp/2b8RJmQ", "http://j.mp/2bFSrtF", "http://j.mp/2b8SXi3", "http://j.mp/2b8RZm3",
+        "http://j.mp/28MBohs", "http://j.mp/2bFRIZC", "http://j.mp/2bufF7o", "http://j.mp/2byr1bu", "http://j.mp/2bHfyUH",
+        "http://j.mp/2bHf80y", "http://j.mp/2bWnTby", "http://j.mp/2bFTiKQ", "http://j.mp/2b8SUTA", "http://j.mp/2bFRQIM",
+        "http://j.mp/2b8SegG", "http://j.mp/2brHsFz", "http://j.mp/2b8SCfc", "http://j.mp/2bFSq95", "http://j.mp/2brI1zc",
+        "http://j.mp/2b8VcBO", "http://j.mp/2bFRxNP", "http://j.mp/2brItxm", "http://j.mp/2brHKw5", "http://j.mp/2brImlf",
+        "http://j.mp/2bFRHF2", "http://j.mp/2bFRXno", "http://j.mp/2brI3ai", "http://j.mp/2bFRyBF", "http://j.mp/2bFREcc"
+    ];
+
+    // العناصر
+    const audio = document.getElementById('quranAudio');
+    const mainBtn = document.getElementById('mainBtn');
+    const playWrapper = document.getElementById('playWrapper');
+    const statusText = document.getElementById('statusText');
+    const partsContainer = document.getElementById('partsContainer');
+
+    let isPlaying = false;
+    let currentPart = -1;
+    let isRandom = false;
+
+    // تهيئة الأزرار
+    function initParts() {
+        partsUrls.forEach((url, index) => {
+            const btn = document.createElement('div');
+            btn.className = 'part-btn';
+            btn.textContent = `الجزء ${index + 1}`;
+            btn.onclick = () => playSpecificPart(index);
+            partsContainer.appendChild(btn);
+        });
+    }
+
+    // تشغيل جزء محدد
+    function playSpecificPart(index) {
+        isRandom = false;
+        // إذا كان نفس الجزء يعمل
+        if (currentPart === index && isPlaying) {
+            togglePlay();
+            return;
+        }
+        loadAndPlay(index);
+    }
+
+    // تشغيل الراديو العشوائي
+    function startRandomRadio() {
+        // اختيار عشوائي من 0 إلى 29
+        const randomIndex = Math.floor(Math.random() * partsUrls.length);
+        isRandom = true;
+        loadAndPlay(randomIndex);
+    }
+
+    // دالة التحميل والتشغيل المركزية
+    function loadAndPlay(index) {
+        currentPart = index;
+        audio.src = partsUrls[index];
+        statusText.textContent = "جاري الاتصال...";
+
+        // تحديث ستايل الأزرار
+        const buttons = document.querySelectorAll('.part-btn');
+        buttons.forEach((btn, i) => {
+            if (i === index) btn.classList.add('active');
+            else btn.classList.remove('active');
+        });
+
+        audio.play().then(() => {
+            isPlaying = true;
+            updateUI();
+        }).catch(error => {
+            console.log(error);
+            statusText.textContent = "اضغط للتشغيل";
+            isPlaying = false;
+            updateUI();
+        });
+    }
+
+    // التبديل تشغيل/إيقاف
+    function togglePlay() {
+        if (audio.paused) {
+            // إذا لم يتم اختيار شيء بعد، ابدأ عشوائياً
+            if (currentPart === -1) {
+                startRandomRadio();
+            } else {
+                audio.play();
+                isPlaying = true;
+            }
+        } else {
+            audio.pause();
+            isPlaying = false;
+        }
+        updateUI();
+    }
+
+    // تحديث الواجهة الرسومية
+    function updateUI() {
+        if (isPlaying) {
+            mainBtn.classList.add('playing');
+            playWrapper.classList.add('playing-anim');
+            if (isRandom) {
+                statusText.textContent = "بث إذاعي مباشر";
+            } else {
+                statusText.textContent = `جاري الاستماع للجزء ${currentPart + 1}`;
+            }
+        } else {
+            mainBtn.classList.remove('playing');
+            playWrapper.classList.remove('playing-anim');
+            statusText.textContent = "متوقف مؤقتاً";
+        }
+    }
+
+    // الأحداث
+    mainBtn.addEventListener('click', togglePlay);
+
+    // عند انتهاء المقطع
+    audio.addEventListener('ended', () => {
+        let next = currentPart + 1;
+        if (next >= partsUrls.length) next = 0;
+        loadAndPlay(next);
+    });
+
+    // تشغيل الكود
+    initParts();
+
+</script>
+</body>
+</html>
